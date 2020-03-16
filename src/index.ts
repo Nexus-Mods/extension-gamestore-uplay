@@ -86,7 +86,7 @@ class UPlayLauncher implements types.IGameStore {
           return resolve(gameEntries);
         });
       } catch (err) {
-        return reject(err);
+        return (err.code === 'ENOENT') ? resolve([]) : reject(err);
       }
     });
   }
