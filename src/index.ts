@@ -67,6 +67,38 @@ class UPlayLauncher implements types.IGameStore {
     return this.mCache;
   }
 
+  public findByName(appName: string): Promise<types.IGameStoreEntry> {
+    const re = new RegExp(appName);
+    return this.allGames()
+      .then(entries => entries.find(entry => re.test(entry.name)))
+      .then(entry => (entry === undefined)
+        ? Promise.reject(new types.GameEntryNotFound(appName, STORE_ID))
+        : Promise.resolve(entry));
+  }
+
+  public findByAppId(appId: string | string[]): Promise<types.IGameStoreEntry> {
+    const matcher = Array.isArray(appId)
+      ? (entry: types.IGameStoreEntry) => (appId.includes(entry.appid))
+      : (entry: types.IGameStoreEntry) => (appId === entry.appid);
+
+    return this.allGames()
+      .then(entries => {
+        const gameEntry = entries.find(matcher);
+        if (gameEntry === undefined) {
+          return Promise.reject(
+            new types.GameEntryNotFound(Array.isArray(appId) ? appId.join(', ') : appId, STORE_ID));
+        } else {
+          return Promise.resolve(gameEntry);
+        }
+      });
+  }
+
+  public getGameStorePath(): Promise<string> {
+    return (!!this.mClientPath)
+      ? Promise.resolve(this.mClientPath, 'Uplay.exe')
+      : Promise.resolve(undefined);
+  }
+
   private getGameEntries(): Promise<types.IGameStoreEntry[]> {
     return (this.mClientPath === undefined) // Can't find the client? don't continue.
       ? Promise.resolve([])
