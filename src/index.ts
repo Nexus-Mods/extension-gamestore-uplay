@@ -95,7 +95,7 @@ class UPlayLauncher implements types.IGameStore {
 
   public getGameStorePath(): Promise<string> {
     return (!!this.mClientPath)
-      ? Promise.resolve(this.mClientPath, 'Uplay.exe')
+      ? this.mClientPath.then(basePath => path.join(basePath, 'Uplay.exe'))
       : Promise.resolve(undefined);
   }
 
