@@ -126,7 +126,7 @@ class UPlayLauncher implements types.IGameStore {
               };
               return gameEntry;
             } catch (err) {
-              log('error', 'gamestore-uplay: registry query failed', err);
+              log('info', 'gamestore-uplay: registry query failed', err);
               return undefined;
             }
           });
