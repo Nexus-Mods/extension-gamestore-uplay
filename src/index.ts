@@ -110,7 +110,7 @@ class UPlayLauncher implements types.IGameStore {
             keys = winapi.RegEnumKeys(hkey);
           } catch (err) {
             // Can't open the hive tree... weird.
-            log('error', 'gamestore-uplay: registry query failed', err);
+            log('error', 'gamestore-uplay: registry query failed', hkey);
             return resolve([]);
           }
           const gameEntries: types.IGameStoreEntry[] = keys.map(key => {
@@ -126,7 +126,7 @@ class UPlayLauncher implements types.IGameStore {
               };
               return gameEntry;
             } catch (err) {
-              log('info', 'gamestore-uplay: registry query failed', err);
+              log('info', 'gamestore-uplay: registry query failed', key.key);
               return undefined;
             }
           });
