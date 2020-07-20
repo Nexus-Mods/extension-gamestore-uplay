@@ -68,7 +68,7 @@ class UPlayLauncher implements types.IGameStore {
   }
 
   public findByName(appName: string): Promise<types.IGameStoreEntry> {
-    const re = new RegExp(appName);
+    const re = new RegExp('^' + appName + '$');
     return this.allGames()
       .then(entries => entries.find(entry => re.test(entry.name)))
       .then(entry => (entry === undefined)
