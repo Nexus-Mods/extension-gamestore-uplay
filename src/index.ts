@@ -67,6 +67,13 @@ class UPlayLauncher implements types.IGameStore {
     return this.mCache;
   }
 
+  public reloadGames(): Promise<void> {
+    return new Promise((resolve) => {
+      this.mCache = this.getGameEntries();
+      return resolve();
+    });
+  }
+
   public findByName(appName: string): Promise<types.IGameStoreEntry> {
     const re = new RegExp('^' + appName + '$');
     return this.allGames()
