@@ -6,6 +6,8 @@ import * as winapi from 'winapi-bindings';
 import { log, types, util } from 'vortex-api';
 
 const STORE_ID = 'uplay';
+const STORE_NAME = 'Uplay';
+const STORE_PRIORITY = 55;
 const UPLAY_EXEC = 'Uplay.exe';
 const REG_UPLAY_INSTALLS = 'SOFTWARE\\WOW6432Node\\Ubisoft\\Launcher\\Installs';
 const REG_UPLAY_NAME_LOCATION =
@@ -16,12 +18,13 @@ const REG_UPLAY_NAME_LOCATION =
  * @class UPlayLauncher
  */
 class UPlayLauncher implements types.IGameStore {
-  public id: string;
+  public id: string = STORE_ID;
+  public name: string = STORE_NAME;
+  public priority: number = STORE_PRIORITY;
   private mClientPath: Promise<string>;
   private mCache: Promise<types.IGameStoreEntry[]>;
 
   constructor() {
-    this.id = STORE_ID;
     if (process.platform === 'win32') {
       // No Windows, no uplay launcher!
       try {
